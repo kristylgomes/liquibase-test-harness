@@ -1,4 +1,4 @@
-package liquibase.sdk.test
+package liquibase.sdk.test.change
 
 import groovy.transform.builder.Builder
 import liquibase.CatalogAndSchema
