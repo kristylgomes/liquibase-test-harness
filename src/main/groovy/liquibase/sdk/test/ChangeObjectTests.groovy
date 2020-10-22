@@ -84,7 +84,7 @@ class ChangeObjectTests extends Specification {
     }
 
     void saveAsExpectedSql(String generatedSql, TestInput testInput) {
-        File outputFile = "${outputResourcesBase}/liquibase/sdk/test/expectedSql/${testInput.database.shortName}/${testInput.changeObject}.sql" as File
+        File outputFile = "${outputResourcesBase}/liquibase/sdk/test/change/expectedSql/${testInput.database.shortName}/${testInput.changeObject}.sql" as File
         outputFile.parentFile.mkdirs()
 
         outputFile.write(generatedSql)

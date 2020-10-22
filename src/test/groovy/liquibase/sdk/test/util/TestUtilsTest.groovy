@@ -15,9 +15,9 @@ class TestUtilsTest extends Specification {
         def paths = TestUtils.getChangeLogPaths(database)
 
         then:
-        paths["addColumn"] == "liquibase/sdk/test/changelogs/addColumn.xml"
-        paths["addPrimaryKey"] == "liquibase/sdk/test/changelogs/addPrimaryKey.xml"
-        paths["renameColumn"] == "liquibase/sdk/test/changelogs/mysql/8/renameColumn.sql"
+        paths["addColumn"] == "liquibase/sdk/test/change/changelogs/addColumn.xml"
+        paths["addPrimaryKey"] == "liquibase/sdk/test/change/changelogs/addPrimaryKey.xml"
+        paths["renameColumn"] == "liquibase/sdk/test/change/changelogs/mysql/8/renameColumn.sql"
 
         when:
         database = new PostgresDatabase()
@@ -25,8 +25,8 @@ class TestUtilsTest extends Specification {
         paths = TestUtils.getChangeLogPaths(database)
 
         then:
-        paths["addColumn"] == "liquibase/sdk/test/changelogs/addColumn.xml"
-        paths["addPrimaryKey"] == "liquibase/sdk/test/changelogs/addPrimaryKey.xml"
-        paths["datatypes.binary"] == "liquibase/sdk/test/changelogs/postgresql/datatypes.binary.xml"
+        paths["addColumn"] == "liquibase/sdk/test/change/changelogs/addColumn.xml"
+        paths["addPrimaryKey"] == "liquibase/sdk/test/change/changelogs/addPrimaryKey.xml"
+        paths["datatypes.binary"] == "liquibase/sdk/test/change/changelogs/postgresql/datatypes.binary.xml"
     }
 }

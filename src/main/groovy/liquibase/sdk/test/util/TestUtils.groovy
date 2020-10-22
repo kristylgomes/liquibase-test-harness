@@ -84,19 +84,19 @@ class TestUtils {
         def minorVersion = database.getConnection().getDatabaseMinorVersion()
 
         def returnPaths = new TreeMap<String, String>()
-        for (String changeLogPath : TestConfig.instance.resourceAccessor.list(null, "liquibase/sdk/test/changelogs", true, true, false)) {
+        for (String changeLogPath : TestConfig.instance.resourceAccessor.list(null, "liquibase/sdk/test/change/changelogs", true, true, false)) {
             def validChangeLog = false
 
             //is it a common changelog?
-            if (changeLogPath =~ Pattern.compile("liquibase/sdk/test/changelogs/[\\w.]+\$")) {
+            if (changeLogPath =~ Pattern.compile("liquibase/sdk/test/change/changelogs/[\\w.]+\$")) {
                 validChangeLog = true
-            } else if (changeLogPath =~ Pattern.compile("liquibase/sdk/test/changelogs/${databaseShortName}/[\\w.]+\$")) {
+            } else if (changeLogPath =~ Pattern.compile("liquibase/sdk/test/change/changelogs/${databaseShortName}/[\\w.]+\$")) {
                 //is it a database-specific changelog?
                 validChangeLog = true
-            } else if (changeLogPath =~ Pattern.compile("liquibase/sdk/test/changelogs/${databaseShortName}/${majorVersion}/[\\w.]+\$")) {
+            } else if (changeLogPath =~ Pattern.compile("liquibase/sdk/test/change/changelogs/${databaseShortName}/${majorVersion}/[\\w.]+\$")) {
                 //is it a database-major-version specific changelog?
                 validChangeLog = true
-            } else if (changeLogPath =~ Pattern.compile("liquibase/sdk/test/changelogs/${databaseShortName}/${majorVersion}/${minorVersion}/[\\w.]+\$")) {
+            } else if (changeLogPath =~ Pattern.compile("liquibase/sdk/test/change/changelogs/${databaseShortName}/${majorVersion}/${minorVersion}/[\\w.]+\$")) {
                 //is it a database-minor-version specific changelog?
                 validChangeLog = true
             }
@@ -109,7 +109,7 @@ class TestUtils {
             }
         }
 
-        Logger.getLogger(this.class.name).info("Found " + returnPaths.size() + " changeLogs for " + database.getShortName() + "/" + database.getDatabaseProductVersion() + " in liquibase/sdk/test/changelogs")
+        Logger.getLogger(this.class.name).info("Found " + returnPaths.size() + " changeLogs for " + database.getShortName() + "/" + database.getDatabaseProductVersion() + " in liquibase/sdk/test/change/changelogs")
 
 
         return returnPaths

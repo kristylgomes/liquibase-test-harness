@@ -28,10 +28,10 @@ class FileUtils {
     }
 
     static String getExpectedSqlFileContent(String changeObject, String databaseShortName, Integer databaseMajorVersion, Integer databaseMinorVersion) {
-        return getFileContent(changeObject, databaseShortName, databaseMajorVersion, databaseMinorVersion, "liquibase/sdk/test/expectedSql", ".sql")
+        return getFileContent(changeObject, databaseShortName, databaseMajorVersion, databaseMinorVersion, "liquibase/sdk/test/change/expectedSql", ".sql")
     }
 
     static String getExpectedSnapshotFileContent(String changeObject, String databaseShortName, Integer databaseMajorVersion, Integer databaseMinorVersion) {
-        return getFileContent(changeObject, databaseShortName, databaseMajorVersion, databaseMinorVersion, "liquibase/sdk/test/expectedSnapshot", ".json")
+        return getFileContent(changeObject, databaseShortName, databaseMajorVersion, databaseMinorVersion, "liquibase/sdk/test/change/expectedSnapshot", ".json")
     }
 }
