@@ -113,7 +113,7 @@ class ChangeObjectTests extends Specification {
         List<TestInput> inputList = new ArrayList<>()
         for (DatabaseUnderTest databaseUnderTest : TestConfig.instance.databasesUnderTest) {
             def database = databaseUnderTest.database
-            for (def changeLogEntry : TestUtils.getChangeLogPaths(database).entrySet()) {
+            for (def changeLogEntry : TestUtils.getChangeLogPaths(databaseUnderTest, TestConfig.instance.inputFormat).entrySet()) {
 
                 def testInput = TestInput.builder()
                         .databaseName(databaseUnderTest.name)

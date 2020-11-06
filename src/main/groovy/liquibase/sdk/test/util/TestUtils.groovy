@@ -11,6 +11,7 @@ import liquibase.sql.Sql
 import liquibase.sqlgenerator.SqlGeneratorFactory
 
 import java.util.logging.Logger
+import java.util.regex.Pattern
 
 class TestUtils {
 
@@ -93,9 +94,6 @@ class TestUtils {
             } else if (changeLogPath =~ "liquibase/sdk/test/change/changelogs/${database.name}/${database.version}/[\\w" +
                     ".]+${inputFormat}+\$") {
                 //is it a database-major-version specific changelog?
-                validChangeLog = true
-            } else if (changeLogPath =~ Pattern.compile("liquibase/sdk/test/change/changelogs/${databaseShortName}/${majorVersion}/${minorVersion}/[\\w.]+\$")) {
-                //is it a database-minor-version specific changelog?
                 validChangeLog = true
             }
 

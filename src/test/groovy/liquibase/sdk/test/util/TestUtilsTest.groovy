@@ -24,14 +24,14 @@ class TestUtilsTest extends Specification {
         then:
         paths["addColumn"] == "liquibase/sdk/test/change/changelogs/addColumn.xml"
         paths["addPrimaryKey"] == "liquibase/sdk/test/change/changelogs/addPrimaryKey.xml"
-        paths["renameColumn"] == "liquibase/sdk/test/changelogs/renameColumn.xml"
+        paths["renameColumn"] == "liquibase/sdk/test/change/changelogs/renameColumn.xml"
 
         when:
         paths = TestUtils.getChangeLogPaths(databaseUnderTest, "sql")
 
         then:
         paths["renameColumn"] == "liquibase/sdk/test/change/changelogs/mysql/8/renameColumn.sql"
-        paths["renameTable"] == "liquibase/sdk/test/changelogs/mysql/renameTable.sql"
+        paths["renameTable"] == "liquibase/sdk/test/change/changelogs/mysql/renameTable.sql"
 
         when:
         database = new PostgresDatabase()
