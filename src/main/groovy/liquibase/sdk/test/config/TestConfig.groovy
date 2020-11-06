@@ -64,39 +64,45 @@ class TestConfig {
             }
 
             for (def databaseUnderTest : this.databasesUnderTest) {
-                databaseUnderTest.database = DatabaseConnectionUtil.initializeDatabase(databaseUnderTest.url, databaseUnderTest.username, databaseUnderTest.password)
-                if (databaseUnderTest.database == null) {
-                    Logger.getLogger(TestUtils.name).severe("Cannot connect to $databaseUnderTest.url. Using offline connection")
+                def initThread = new Thread({
 
-                    for (def possibleDatabase : DatabaseFactory.getInstance().getImplementedDatabases()) {
-                        if (possibleDatabase.getDefaultDriver(databaseUnderTest.url) != null) {
-                            println "Database ${possibleDatabase.shortName} accepts $databaseUnderTest.url"
+                    databaseUnderTest.database = DatabaseConnectionUtil.initializeDatabase(databaseUnderTest.url, databaseUnderTest.username, databaseUnderTest.password)
+                    if (databaseUnderTest.database == null) {
+                        Logger.getLogger(TestUtils.name).severe("Cannot connect to $databaseUnderTest.url. Using offline connection")
 
-                            databaseUnderTest.database = DatabaseConnectionUtil.initializeDatabase("offline:${possibleDatabase.shortName}?version=${databaseUnderTest.version}", databaseUnderTest.username, null)
-                            break
+                        for (def possibleDatabase : DatabaseFactory.getInstance().getImplementedDatabases()) {
+                            if (possibleDatabase.getDefaultDriver(databaseUnderTest.url) != null) {
+                                println "Database ${possibleDatabase.shortName} accepts $databaseUnderTest.url"
+
+                                databaseUnderTest.database = DatabaseConnectionUtil.initializeDatabase("offline:${possibleDatabase.shortName}?version=${databaseUnderTest.version}", databaseUnderTest.username, null)
+                                break
+                            }
                         }
-                    }
-                } else {
-                    LockServiceFactory.getInstance().getLockService(databaseUnderTest.database).forceReleaseLock()
-                }
-
-                databaseUnderTest.database.outputDefaultCatalog = false
-                databaseUnderTest.database.outputDefaultSchema = false
-
-                if (databaseUnderTest.name == null) {
-                    databaseUnderTest.name = databaseUnderTest.database.getShortName()
-                    if (databaseUnderTest.database.connection instanceof OfflineConnection) {
-                        databaseUnderTest.name += " ${databaseUnderTest.url}"
                     } else {
-                        databaseUnderTest.name += " ${databaseUnderTest.database.getDatabaseProductVersion()}"
+                        LockServiceFactory.getInstance().getLockService(databaseUnderTest.database).forceReleaseLock()
                     }
-                } else if (databaseUnderTest.name != databaseUnderTest.database.shortName ||
-                        !databaseUnderTest.version.startsWith(databaseUnderTest.database.databaseMajorVersion.toString())) {
-                    Logger.getLogger(this.class.name).severe("Provided database name/majorVersion doesn't match with actual\
+
+                    databaseUnderTest.database.outputDefaultCatalog = false
+                    databaseUnderTest.database.outputDefaultSchema = false
+
+                    if (databaseUnderTest.name == null) {
+                        databaseUnderTest.name = databaseUnderTest.database.getShortName()
+                        if (databaseUnderTest.database.connection instanceof OfflineConnection) {
+                            databaseUnderTest.name += " ${databaseUnderTest.url}"
+                        } else {
+                            databaseUnderTest.name += " ${databaseUnderTest.database.getDatabaseProductVersion()}"
+                        }
+                    } else if (databaseUnderTest.name != databaseUnderTest.database.shortName ||
+                            !databaseUnderTest.version.startsWith(databaseUnderTest.database.databaseMajorVersion.toString())) {
+                        Logger.getLogger(this.class.name).severe("Provided database name/majorVersion doesn't match with actual\
 ${System.getProperty("line.separator")}    provided: ${databaseUnderTest.name} ${databaseUnderTest.version}\
 ${System.getProperty("line.separator")}    actual: ${databaseUnderTest.database.shortName} \
 ${databaseUnderTest.database.databaseMajorVersion.toString()}")
-                }
+                    }
+                })
+
+                initThread.start()
+                initThread.join()
             }
 
             databasesConnected = true
